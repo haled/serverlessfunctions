@@ -15,7 +15,16 @@ public static async Task<HttpResponseMessage> Run(HttpRequestMessage req, TraceW
             //log.Info("\n\n**** In FOREACH -> " + nutshellEvent.payloadType);
             if(nutshellEvent.payloadType == "leads" && nutshellEvent.action == "update")
             {
-                log.Info("\n\n**** Detected a Lead Change -> " + nutshellEvent.htmlUrl);
+                log.Info("\n\n**** Detected a Lead Change");
+                foreach(var c in nutshellEvent.changes)
+                {
+                    // this code doesn't work correctly
+                    // when a lead is "won", the action in the event is "win".
+                    if(c.attribute == "status")
+                    {
+                        log.Info("\n\n**** Attribute Changed -> " + c.attribute + " value -> " + c.newValue);
+                    }
+                }
             }
         }
     }
